@@ -16,9 +16,21 @@ Route::get('/', function () {
 });
 
 Route::get('/', ['uses' => 'DashboardController@index']);
+
 Route::get('/users', ['uses' => 'DashboardController@allUsers']);
+Route::get('/user/{id?}/delete', ['uses' => 'DashboardController@deleteUser']);
+Route::get('/user/{id?}/edit', ['uses' => 'DashboardController@editUser']);
+Route::post('//user/{id?}/edit', ['uses' => 'DashboardController@editUserPost']);
+
 Route::get('/account', ['uses' => 'DashboardController@myAccount']);
 Route::post('/account', ['uses' => 'DashboardController@myAccountPost']);
+
+Route::get('/my-reports', ['uses' => 'DashboardController@myReports']);
+Route::get('/report/add', ['uses' => 'DashboardController@addReport']);
+Route::post('/report/add', ['uses' => 'DashboardController@addReportPost']);
+Route::get('/report/{id?}/edit', ['uses' => 'DashboardController@addReport']);
+Route::get('/reports', ['uses' => 'DashboardController@userReports']);
+Route::get('/reports/{id?}', ['uses' => 'DashboardController@reports']);
 
 Route::get('/login', array('as' => 'login','uses' => 'HomeController@login'));
 Route::post('/login', ['uses' => 'Auth\LoginController@login']);

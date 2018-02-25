@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Remainder App</title>
         <!-- Vendor styles -->
-        <link rel="stylesheet" href="bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
-        <link rel="stylesheet" href="bower_components/animate.css/animate.min.css">
-        <link rel="stylesheet" href="bower_components/jquery.scrollbar/jquery.scrollbar.css">
+        <link rel="stylesheet" href="{{ asset('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bower_components/animate.css/animate.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bower_components/jquery.scrollbar/jquery.scrollbar.css') }}">
 
         <!-- App styles -->
-        <link rel="stylesheet" href="css/app.min.css">
+        <link rel="stylesheet" href="{{ asset('css/app.min.css') }}">
     </head>
 
     <body data-ma-theme="green">
@@ -46,7 +46,7 @@
                 <div class="scrollbar-inner">
                     <div class="user">
                         <div class="user__info" data-toggle="dropdown">
-                            <img class="user__img" src="img/profile-pics/8.jpg" alt="">
+                            <img class="user__img" src="{{ asset('img/profile-pics/8.jpg') }}" alt="">
                             <div>
                                 <div class="user__name">{{ $user->first_name . ' ' . $user->last_name }}</div>
                                 <div class="user__email">{{ $user->email }}</div>
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{{ url('/') }}/account">View Profile</a>
                             <a class="dropdown-item" href="{{ url('/') }}/logout">Logout</a>
                         </div>
                     </div>
@@ -62,12 +62,12 @@
                     <ul class="navigation">
                         <li><a href="{{ url('/') }}"><i class="zmdi zmdi-home"></i> Home</a></li>
 
-
+                        @if(Auth::user()->user_type != 3)
                         <li><a href="{{ url('/') }}/users"><i class="zmdi zmdi-accounts"></i> Manage Users</a></li>
 
                         <li><a href="{{ url('/') }}/reports"><i class="zmdi zmdi-file-text"></i> Reports</a></li>
-
-                        <li><a href="{{ url('/') }}/my-report"><i class="zmdi zmdi-file"></i> My Report</a></li>
+                        @endif
+                        <li><a href="{{ url('/') }}/my-reports"><i class="zmdi zmdi-file"></i> My Report</a></li>
 
                         <li><a href="{{ url('/') }}/account"><i class="zmdi zmdi-account"></i> Account</a></li>
 
@@ -126,13 +126,14 @@
 
         <!-- Javascript -->
         <!-- Vendors -->
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="bower_components/popper.js/dist/umd/popper.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
-        <script src="bower_components/jquery-scrollLock/jquery-scrollLock.min.js"></script>
+        <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('bower_components/popper.js/dist/umd/popper.min.js') }}"></script>
+        <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bower_components/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
+        <script src="{{ asset('bower_components/jquery-scrollLock/jquery-scrollLock.min.js') }}"></script>
 
         <!-- App functions and actions -->
-        <script src="js/app.min.js"></script>
+        <script src="{{ asset('js/app.min.js') }}"></script>
+        @yield('scripts')
     </body>
 </html>

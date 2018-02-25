@@ -75,7 +75,7 @@
                 <form method="POST" action="{{ url('/') }}/register">
                     {{ csrf_field() }}
                     <input type="hidden" name="admin" value="{{ $admin }}" /> 
-                    <input type="hidden" name="maneger" value="{{ $manager }}" /> 
+                    <input type="hidden" name="manager" value="{{ $manager }}" /> 
                     <input type="hidden" name="type" value="{{ $type }}" /> 
                     <div class="login__block__body">
                         <div class="form-group form-group--float form-group--centered">
