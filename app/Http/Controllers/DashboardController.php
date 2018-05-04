@@ -147,15 +147,14 @@ class DashboardController extends Controller
             }
         }
         
-        $request->session()->flash('success', 'You have successfully updated your account.');
-        return redirect('account');
+        return redirect('account')->withSuccess('You have successfully updated your account.');
     }
     
     public function myReports()
     {
-        $data['user']   = Auth::user();
-        $data['reports']  = Report::where('user', Auth::user()->id)->orderBy('id','desc')->get();
-        return view('dashboard.reports')->with($data);
+        $user = Auth::user();
+        $reports = Report::where('user', Auth::user()->id)->orderBy('id','desc')->get();
+        return view('dashboard.reports')->with(compact('user', 'reports'));
     }
     
     public function reports($id = false)
@@ -201,7 +200,7 @@ class DashboardController extends Controller
             }
         }
         else {
-            $data['report']     = Report::where('created_at', '>=', Carbon::today())->where('user',Auth::user()->id)->first();
+            $data['report'] = Report::where('created_at', '>=', Carbon::today())->where('user',Auth::user()->id)->first();
         }
         return view('dashboard.add-report')->with($data);
     }
@@ -209,26 +208,28 @@ class DashboardController extends Controller
     public function addReportPost(Request $request)
     {
         
-        $report = Report::where('created_at', '>=', Carbon::today())->where('user',Auth::user()->id)->first();
+        $report = Report::where('created_at', '>=', Carbon::today())->where('user', Auth::user()->id)->first();
         if ($report) {
             $report->summary    = $request->input('summary');
             $report->high       = $request->input('high');
             $report->low        = $request->input('low');
             $report->comments   = $request->input('comments');
             $report->save();
-        }
-        else {
-            Report::create([
-                'summary'   => $request->input('summary'),
-                'high'      => $request->input('high'),
-                'low'       => $request->input('low'),
-                'comments'  => $request->input('comments'),
-                'user'      => Auth::user()->id
-            ]);
+            
+            return back()->withSuccess('Your report successfully updated.');
         }
         
-        $request->session()->flash('success', 'Your report successfully saved.');
-        return back();
+        Report::create([
+            'summary'   => $request->input('summary'),
+            'high'      => $request->input('high'),
+            'low'       => $request->input('low'),
+            'comments'  => $request->input('comments'),
+            'user'      => Auth::user()->id
+        ]);
+   
+        return back()->withSuccess('Your report successfully saved.');
+        
+        
         
     }
    
