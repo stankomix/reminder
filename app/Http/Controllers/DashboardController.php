@@ -34,12 +34,12 @@ class DashboardController extends Controller
     {
         $data['user']   = Auth::user();
         $users = array();
-        if (Auth::user()->user_type == 1)
+        if (Auth::user()->user_type == Config::get('constants.user_types.admin'))
         {
-            $users = User::where('user_type','!=',1)->get();
+            $users = User::where('user_type','!=',Config::get('constants.user_types.admin'))->where('admin',Auth::user()->id)->get();
         }
         else {
-            $users = User::where('manager',Auth::user()->id)->where('user_type', 3)->get();
+            $users = User::where('manager',Auth::user()->id)->where('user_type', Config::get('constants.user_types.user'))->get();
         }
         
         $data['users']  = $users;
@@ -49,7 +49,7 @@ class DashboardController extends Controller
     public function editUser($id)
     {
         $data['user']       = User::find($id);
-        $data['managers']   = User::where('user_type', 2)->get();
+        $data['managers']   = User::where('user_type', Config::get('constants.user_types.manager'))->get();
         return view('dashboard.user_edit')->with($data);
     }
     
@@ -65,7 +65,7 @@ class DashboardController extends Controller
         $user->first_name   = $request->input('first_name');
         $user->last_name    = $request->input('last_name');
         $user->name         = $request->input('name');
-        if (Auth::user()->user_type == 1) {
+        if (Auth::user()->user_type == Config::get('constants.user_types.admin')) {
             $user->manager      = $request->input('manager');
             $user->user_type    = $request->input('user_type');
         }
@@ -91,7 +91,7 @@ class DashboardController extends Controller
         
         $data['user'] = $user;
         $companyAdmin = '';
-        if ($user->user_type == 1) {
+        if ($user->user_type == Config::get('constants.user_types.admin')) {
             $companyAdmin = $user->id;
         } 
         else {
@@ -116,7 +116,7 @@ class DashboardController extends Controller
         $user->last_name    = $request->input('last_name');
         $user->save();
         
-        if (Auth::user()->user_type == 1) {
+        if (Auth::user()->user_type == Config::get('constants.user_types.admin')) {
             $companyId = $request->input('company_id');
             if ($companyId) {
                 //update
@@ -170,7 +170,7 @@ class DashboardController extends Controller
     public function userReports()
     {
         $data['user']   = Auth::user();
-        if (Auth::user()->user_type == 1) {
+        if (Auth::user()->user_type == Config::get('constants.user_types.admin')) {
             $reports  = Report::select('reports.*', 'users.*')->leftJoin('users', 'users.id', '=', 'reports.user')->orderBy('reports.id','desc')->get();
         } 
         else {
